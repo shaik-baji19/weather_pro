@@ -727,19 +727,26 @@ class _WeatherScreenState extends State<WeatherScreen> with TickerProviderStateM
               child: Column(
                 children: [
                   Container(
-                    height: 75,
+                    height: 95, 
                     padding: EdgeInsets.symmetric(horizontal: chartPadding), 
                     child: LineChart(
                       LineChartData(
                         lineTouchData: LineTouchData(
                           touchTooltipData: LineTouchTooltipData(
-                            getTooltipColor: (touchedSpot) => isDark ? Colors.orangeAccent.withOpacity(0.9) : Colors.black87.withOpacity(0.8),
                             tooltipRoundedRadius: 8,
+                            tooltipMargin: 12, 
+                            fitInsideHorizontally: true, 
+                            fitInsideVertically: true, 
                             getTooltipItems: (touchedSpots) {
-                              return touchedSpots.map((barSpot) {
+                              return touchedSpots.map((LineBarSpot touchedSpot) {
                                 return LineTooltipItem(
-                                  "${barSpot.y.round()}°",
-                                  TextStyle(color: isDark ? Colors.black : Colors.white, fontWeight: FontWeight.bold),
+                                  '${touchedSpot.y.round()}°',
+                                  const TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 13,
+                                    height: 1.1, 
+                                  ),
                                 );
                               }).toList();
                             },
@@ -817,7 +824,7 @@ class _WeatherScreenState extends State<WeatherScreen> with TickerProviderStateM
     );
   }
 
-  Widget buildForecastSection(double currentWidth) {
+  Widget buildForecastSection(double screenWidth) {
     final dailyList = getDailyForecast();
     
     return Column(
@@ -839,7 +846,7 @@ class _WeatherScreenState extends State<WeatherScreen> with TickerProviderStateM
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: List.generate(dailyList.length, (index) {
-                  return forecastTile(dailyList[index], currentWidth);
+                  return forecastTile(dailyList[index], screenWidth);
                 }),
               ),
             ),
